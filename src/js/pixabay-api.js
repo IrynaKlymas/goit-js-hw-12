@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const forbiddenTags = ['tank', 'war', 'danger', 'military', 'army', 'battle'];
-
 export async function getImagesByQuery(query, page = 1) {
   const API_KEY = '50678696-ed6f097088bf5690dd98584b9';
   const BASE_URL = 'https://pixabay.com/api/';
@@ -19,13 +17,7 @@ export async function getImagesByQuery(query, page = 1) {
 
   try {
     const response = await axios.get(BASE_URL, { params });
-    const filteredHits = response.data.hits.filter(hit => {
-      const tagsArray = hit.tags
-        .split(',')
-        .map(tag => tag.trim().toLowerCase());
-      return !tagsArray.some(tag => forbiddenTags.includes(tag));
-    });
-    return { ...response.data, hits: filteredHits };
+    return response.data;
   } catch (error) {
     console.error('Error fetching images:', error);
     throw new Error('Failed to fetch images from Pixabay.');
